@@ -6,10 +6,6 @@ zarr_opt:
     save_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/'
     save_loc_1deg: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/'
     years_range: [1979, 2024]
-    prefix: 'ERA5_subset_6h'
-    subset_level: [1, 250, 450, 550, 650, 750, 850, 950, 1000]
-    # [1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 850, 925, 1000]
-    
     chunk_size_3d:
         time: 1
         latitude: 721
@@ -123,7 +119,7 @@ zscore:
     Z: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/all_in_one/ERA5_plevel_1deg_6h_*_conserve.zarr'
     save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT/'
     years_range: [1979, 2019]
-    prefix: '6h_2019'
+    prefix: 'zscore_6h_1979_2019'
     
 residual:
     MSL: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/all_in_one/ERA5_plevel_1deg_6h_*_conserve.zarr'
@@ -153,79 +149,4 @@ residual:
     mean_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/mean_std/mean_6h_1979_2019_conserve_1deg.nc'
     std_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/mean_std/std_6h_1979_2019_conserve_1deg.nc'
     years_range: [1979, 2019]
-    prefix: '6h_2019_residual'
-
-
-
-
-#     zscore:
-#     MSL: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     SKT: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     SP: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     TCC: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_10U: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_10V: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_2T: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     evaporation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_latent_heat_flux: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_net_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_net_thermal_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_sensible_heat_flux: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     toa_incident_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     top_net_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     top_net_thermal_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     total_precipitation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     land_sea_CI_mask: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     specific_total_water: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     specific_total_water_500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Q: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     T: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     U: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     V: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Z: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Q500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     T500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     U500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     V500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Z500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT/'
-#     years_range: [1979, 2019]
-#     prefix: '6h_2019'
-    
-# residual:
-#     MSL: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     SKT: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     SP: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     TCC: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_10U: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_10V: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     VAR_2T: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     evaporation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_latent_heat_flux: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_net_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_net_thermal_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     surface_sensible_heat_flux: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     toa_incident_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     top_net_solar_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     top_net_thermal_radiation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     total_precipitation: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     land_sea_CI_mask: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     specific_total_water: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     specific_total_water_500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Q: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     T: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     U: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     V: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Z: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Q500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     T500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     U500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     V500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     Z500: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/all_in_one/ERA5_plevel_6h_*.zarr'
-#     save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT/'
-#     mean_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/mean_std/mean_6h_1979_2019_13lev_0.25deg.nc'
-#     std_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/mean_std/std_6h_1979_2019_13lev_0.25deg.nc'
-#     years_range: [1979, 2019]
-#     prefix: '6h_2019_residual'
-
-    
+    prefix: 'residual_6h_1979_2019'
