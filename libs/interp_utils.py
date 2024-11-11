@@ -9,6 +9,7 @@ Reference
  - WeatherBench2 regridding: 
      https://github.com/google-research/weatherbench2/blob/main/weatherbench2/regridding.py
 '''
+from __future__ import annotations
 
 import xarray
 import numpy as np
@@ -17,7 +18,6 @@ from sklearn import neighbors
 import functools
 import dataclasses
 from typing import Union
-from __future__ import annotations
 Array = Union[np.ndarray]
 
 @dataclasses.dataclass(frozen=True)

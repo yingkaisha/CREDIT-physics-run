@@ -138,6 +138,7 @@ def process_file_group(file_list, output_dir,
                        variables_levels, 
                        time_intervals=None,
                        check_fcst_hour=True,
+                       time_encode=True,
                        size_thres=4000000000):
     '''
     Process a group of netCDF4 files, combining them into a single netCDF4 file.
@@ -224,7 +225,20 @@ def process_file_group(file_list, output_dir,
             
         # Save the dataset using NetCDF4 format
         # encoding = {var: {'zlib': True, 'complevel': 4} for var in ds.data_vars}
-        ds.to_netcdf(output_file, format='NETCDF4')
+        if time_encode:
+            time_encoding = {
+                "units": "hours since 1900-01-01 00:00:00",
+                "calendar": "gregorian"
+            }
+        
+            ds.to_netcdf(output_file,  
+                         format='NETCDF4', 
+                         encoding={'time': time_encoding}, 
+                         mode='w')
+        else:
+            ds.to_netcdf(output_file, 
+                         format='NETCDF4', 
+                         mode='w')
         ds.close()
         print(f"Successfully saved combined dataset to {output_file}")
     
@@ -253,6 +267,7 @@ def process_file_group_safe(file_list, output_dir,
                             variables_levels, 
                             time_intervals=None,
                             check_fcst_hour=True,
+                            time_encode=True,
                             size_thres=4000000000):
     '''
     Process a group of netCDF4 files, combining them into a single netCDF4 file.
@@ -339,10 +354,23 @@ def process_file_group_safe(file_list, output_dir,
         for old_name, new_name in coord_mapping.items():
             if old_name in ds.coords:
                 ds = ds.rename({old_name: new_name})
-                
-        # Save the dataset using NetCDF4 format
-        # encoding = {var: {'zlib': True, 'complevel': 4} for var in ds.data_vars}
-        ds.to_netcdf(output_file, format='NETCDF4')  # , encoding=encoding
+
+        if time_encode:
+            time_encoding = {
+                "units": "hours since 1900-01-01 00:00:00",
+                "calendar": "gregorian"
+            }
+        
+            ds.to_netcdf(output_file, 
+                         compute=True, 
+                         format='NETCDF4', 
+                         encoding={'time': time_encoding}, 
+                         mode='w')
+        else:
+            ds.to_netcdf(output_file, 
+                         compute=True, 
+                         format='NETCDF4', 
+                         mode='w')
         ds.close()
         print(f"Successfully saved combined dataset to {output_file}")
         
