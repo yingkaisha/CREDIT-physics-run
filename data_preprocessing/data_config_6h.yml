@@ -1,6 +1,6 @@
 qsub:
-    qsub_loc: '/glade/u/home/ksha/credit-data/qsub/'
-    scripts_loc: '/glade/u/home/ksha/credit-data/data_preprocessing/scripts/'
+    qsub_loc: '/glade/u/home/ksha/CREDIT-physics-run/qsub/'
+    scripts_loc: '/glade/u/home/ksha/CREDIT-physics-run/data_preprocessing/scripts/'
 
 zarr_opt:
     save_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/'
