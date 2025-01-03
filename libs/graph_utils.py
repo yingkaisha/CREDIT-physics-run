@@ -28,6 +28,7 @@ def lg_box(LG):
     LG.get_frame().set_facecolor('white')
     LG.get_frame().set_edgecolor('k')
     LG.get_frame().set_linewidth(0)
+    LG.get_frame().set_alpha(1.0)
     return LG
 
 def lg_clean(LG):

@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import xarray as xr
+import pandas as pd
 
 def create_dir(path):
     """
@@ -54,6 +55,27 @@ def get_forward_data(filename) -> xr.DataArray:
     dataset = xr.open_zarr(filename, consolidated=True)
     return dataset
     
+
+def accum_6h_24h(ds_ours, ini=0, copy=True):
+    """
+    Convert 6 hourly variables to 24 hour accumulated variables.
+    """
+    h_shift = ini + 6
+    h_convert_ending_time = 24 + ini
+    
+    if copy:
+        ds_ours_shift = ds_ours.copy(deep=True)
+        # convert to start time to work with xarray resample
+        ds_ours_shift['time'] = ds_ours_shift['time'] - pd.Timedelta(hours=h_shift)
+        # accumulate
+        ds_ours_24h = ds_ours_shift.resample(time='24h').sum()
+    else:
+        ds_ours['time'] = ds_ours['time'] - pd.Timedelta(hours=h_shift)
+        ds_ours_24h = ds_ours.resample(time='24h').sum()
+        
+    ds_ours_24h['time'] = ds_ours_24h['time'] + pd.Timedelta(hours=h_convert_ending_time)
+    
+    return ds_ours_24h
 
 def get_nc_files(base_dir, folder_prefix='%Y-%m-%dT%HZ'):
     """
