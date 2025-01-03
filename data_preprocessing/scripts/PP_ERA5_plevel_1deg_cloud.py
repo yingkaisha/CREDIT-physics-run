@@ -1,5 +1,5 @@
 '''
-1-deg interpolation
+1-deg interpolation on separated moisture components (not used in the paper).
 
 Yingkai Sha
 ksha@ucar.edu

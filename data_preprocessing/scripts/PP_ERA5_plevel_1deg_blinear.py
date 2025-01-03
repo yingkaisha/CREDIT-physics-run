@@ -1,5 +1,5 @@
 '''
-1-deg interpolation
+1-deg interpolation using bilinear method (not used / replaced by the conservertive interpoation)
 
 Yingkai Sha
 ksha@ucar.edu

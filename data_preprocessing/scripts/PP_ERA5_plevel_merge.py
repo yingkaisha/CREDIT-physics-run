@@ -1,5 +1,5 @@
 '''
-This script merges all gathered ERA5 zarr files as one
+This script merges all gathered ERA5 zarr files as one (not used / replaced by interpolation + merge)
 
 Yingkai Sha
 ksha@ucar.edu
