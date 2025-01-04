@@ -1,0 +1,47 @@
+qsub:
+    qsub_loc: '/glade/u/home/ksha/CREDIT-physics-run/qsub/'
+    scripts_loc: '/glade/u/home/ksha/CREDIT-physics-run/verification/scripts/'
+    plot_data_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/PLOT_data/'
+
+geo:
+    geo_file_nc: 'xxxxx'
+
+ERA5_weatherbench:
+    save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/'
+    save_loc_clim: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/'
+    
+ERA5_ours:
+    save_loc: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/upper_subset/ERA5_subset_1deg_6h_*_conserve.zarr'
+    save_loc_clim: 'xxx'
+    year_range: [2020, 2022]
+    verif_variables: 
+        V: null
+        U: null
+        T: null
+        specific_total_water: null
+        Z: null
+
+IFS:
+    save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/GATHER/IFS/'
+    save_loc_gather: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/GATHER/IFS/'
+    save_loc_verif: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/IFS/'
+    year_range: [2020, 2021]
+    lead_range: [6, 240]
+    verif_lead_range: [6, 240]
+
+fuxi_physics:
+    save_loc_rollout: '/glade/derecho/scratch/ksha/CREDIT/RAW_OUTPUT/fuxi_plevel_physics/'
+    save_loc_gather: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/GATHER/fuxi_plevel_physics/'
+    save_loc_verif: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/fuxi_plevel_physics/'
+    year_range: [2020, 2021]
+    lead_range: [6, 360]
+    verif_lead_range: [6, 360]
+
+fuxi_dry:
+    save_loc_rollout: '/glade/derecho/scratch/ksha/CREDIT/RAW_OUTPUT/fuxi_plevel_dry/'
+    save_loc_gather: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/GATHER/fuxi_plevel_dry/'
+    save_loc_verif: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/fuxi_plevel_dry/'
+    year_range: [2020, 2021]
+    lead_range: [6, 360]
+    verif_lead_range: [6, 360]
+        
