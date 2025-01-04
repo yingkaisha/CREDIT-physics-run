@@ -1,5 +1,6 @@
 data_preprocessing/qsub*
 data_preprocessing/*.csv
+physics/qsub*
 *.png
 *.log
 *.out
