@@ -1,0 +1,17 @@
+
+# the storage space of result files
+data:
+    save_loc: '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/PLOT_data/'
+
+geo:
+    geo_file_zarr: '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/static/ERA5_plevel_1deg_6h_subset_static.zarr'
+    
+# Matplotlib figure export settings
+figure:
+    save_loc: '/glade/u/home/ksha/figures/'
+    keys:
+        dpi: 250
+        orientation: 'portrait' 
+        bbox_inches: 'tight' 
+        pad_inches: 0.1 
+        transparent: False
