@@ -15,13 +15,8 @@ args = vars(parser.parse_args())
 
 ind_start = int(args['ind_start'])
 ind_end = int(args['ind_end'])
-
-# Years to process
-years = np.arange(2020, 2022, 1)
-
 # ====================== #
 
-# params
 RAD_EARTH = 6371000 # m
 RVGAS = 461.5 # J/kg/K
 RDGAS = 287.05 # J/kg/K
@@ -31,8 +26,7 @@ LH_WATER = 2.501e6  # J/kg
 LH_ICE = 333700 # J/kg
 CP_DRY = 1004.64 # J/kg K
 CP_VAPOR = 1810.0 # J/kg K
-CP_LIQUID = 4188.0 # J/kg K
-CP_ICE = 2117.27 # J/kg K
+
 N_seconds = 3600 * 6  # 6-hourly data
 
 # Function to compute mass residual
@@ -97,15 +91,12 @@ def water_budget_residual(q, precip, evapor, N_seconds, area, level_p):
 
     return residual, dTWC_sum, E_sum, P_sum
 
-def energy_budget_residual(u, v, T, q_v, q_liquid, q_ice, 
-                           GPH_surf, TOA_net, OLR, R_short, R_long, LH, SH, 
-                           N_seconds, area, level_p):
-    
-    C_p = (1 - q_v - q_liquid - q_ice) * CP_DRY + q_v * CP_VAPOR + q_liquid * CP_LIQUID + q_ice * CP_ICE
+def energy_budget_residual(u, v, T, q, GPH_surf, TOA_net, OLR, R_short, R_long, LH, SH, N_seconds, area, level_p):
+    C_p = (1 - q) * CP_DRY + q * CP_VAPOR
     
     ken = 0.5 * (u ** 2 + v ** 2)
     
-    E_qgk = (LH_WATER+LH_ICE) * q_v + LH_ICE*(q_liquid) + GPH_surf + ken
+    E_qgk = LH_WATER * q + GPH_surf + ken
     
     
     R_T = (TOA_net + OLR) / N_seconds
@@ -131,20 +122,19 @@ def energy_budget_residual(u, v, T, q_v, q_liquid, q_ice,
     residual = (R_T_sum - F_S_sum) - dTE_sum
     return residual, dTE_sum, R_T_sum, F_S_sum
 
+
 # Load datasets
-base_dir = '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_base/'
+base_dir = '/glade/derecho/scratch/ksha/CREDIT_data/ERA5_plevel_1deg/'
 
 # Static dataset
-filename_static = base_dir + 'static/ERA5_plevel_6h_static.zarr'
+filename_static = base_dir + 'static/ERA5_plevel_1deg_6h_conserve_static.zarr'
 ds_static = xr.open_zarr(filename_static)
 
-
+# Years to process
+years = np.arange(2020, 2022, 1)
 
 # Initialize empty lists to store data
 q = []
-q_v = []
-q_liquid = []
-q_ice = []
 T = []
 u = []
 v = []
@@ -163,11 +153,15 @@ GPH_surf = ds_static['geopotential_at_surface']
 # Calculate the total number of time steps across all years
 total_time_steps = 0
 
+
+time_steps_per_year = []
+
 for i_year, year in enumerate(years):
-    filename_ERA5 = base_dir + f'upper_air/ERA5_plevel_6h_upper_air_{year}.zarr'
+    filename_ERA5 = base_dir + f'upper_subset/ERA5_subset_1deg_6h_{year}_conserve.zarr'
     ds_ERA5 = xr.open_zarr(filename_ERA5)
     n_time = ds_ERA5.dims['time']
     total_time_steps += n_time
+    time_steps_per_year.append(n_time)
     # --------------------------------------- #
     if i_year == 0:
         level_p = ds_ERA5['level'] * 100.0
@@ -188,14 +182,8 @@ if ind_end > total_time_steps:
 cumulative_time = 0
 
 for i_year, year in enumerate(years):
-    filename_ERA5 = base_dir + f'upper_air/ERA5_plevel_6h_upper_air_{year}.zarr'
+    filename_ERA5 = base_dir + f'upper_subset/ERA5_subset_1deg_6h_{year}_conserve.zarr'
     ds_ERA5 = xr.open_zarr(filename_ERA5)
-
-    filename_ERA5 = base_dir + f'all_in_one/ERA5_plevel_6h_{year}.zarr'
-    ds_surf = xr.open_zarr(filename_ERA5)
-    
-    filename_cloud = base_dir + f'cloud/ERA5_plevel_6h_cloud_{year}.zarr'
-    ds_cloud = xr.open_zarr(filename_cloud)
     
     # Get the number of time steps in the current year's dataset
     n_time = ds_ERA5.dims['time']
@@ -209,40 +197,24 @@ for i_year, year in enumerate(years):
         # Subset the data for the overlapping time indices
         time_slice = slice(year_ind_start, year_ind_end)
         
-        # --------------------- #
-        # q components
-        q_v.append(ds_ERA5['Q'].isel(time=time_slice))
-        q_v_da = ds_ERA5['Q'].isel(time=time_slice)
-        q_cl = ds_cloud['CLWC'].isel(time=time_slice)
-        q_ci = ds_cloud['CIWC'].isel(time=time_slice)
-        q_r = ds_cloud['CRWC'].isel(time=time_slice)
-        q_s = ds_cloud['CSWC'].isel(time=time_slice)
-        q.append(q_v_da + q_cl + q_ci + q_r + q_s)
-        q_liquid.append(q_cl + q_r)
-        q_ice.append(q_ci + q_s)
-        
-        # --------------------- #
-        # Subset and append other variables
+        q.append(ds_ERA5['specific_total_water'].isel(time=time_slice))
         T.append(ds_ERA5['T'].isel(time=time_slice))
         u.append(ds_ERA5['U'].isel(time=time_slice))
         v.append(ds_ERA5['V'].isel(time=time_slice))
-        precip.append(ds_surf['total_precipitation'].isel(time=time_slice))
-        evapor.append(ds_surf['evaporation'].isel(time=time_slice))
-        TOA_net.append(ds_surf['top_net_solar_radiation'].isel(time=time_slice))
-        OLR.append(ds_surf['top_net_thermal_radiation'].isel(time=time_slice))
-        R_short.append(ds_surf['surface_net_solar_radiation'].isel(time=time_slice))
-        R_long.append(ds_surf['surface_net_thermal_radiation'].isel(time=time_slice))
-        LH.append(ds_surf['surface_latent_heat_flux'].isel(time=time_slice))
-        SH.append(ds_surf['surface_sensible_heat_flux'].isel(time=time_slice))
+        precip.append(ds_ERA5['total_precipitation'].isel(time=time_slice))
+        evapor.append(ds_ERA5['evaporation'].isel(time=time_slice))
+        TOA_net.append(ds_ERA5['top_net_solar_radiation'].isel(time=time_slice))
+        OLR.append(ds_ERA5['top_net_thermal_radiation'].isel(time=time_slice))
+        R_short.append(ds_ERA5['surface_net_solar_radiation'].isel(time=time_slice))
+        R_long.append(ds_ERA5['surface_net_thermal_radiation'].isel(time=time_slice))
+        LH.append(ds_ERA5['surface_latent_heat_flux'].isel(time=time_slice))
+        SH.append(ds_ERA5['surface_sensible_heat_flux'].isel(time=time_slice))
 
     # Update cumulative time index
     cumulative_time += n_time
-
+    
 # After processing all years, concatenate the lists along the 'time' dimension
 q = xr.concat(q, dim='time')
-q_v = xr.concat(q_v, dim='time')
-q_liquid = xr.concat(q_liquid, dim='time')
-q_ice = xr.concat(q_ice, dim='time')
 T = xr.concat(T, dim='time')
 u = xr.concat(u, dim='time')
 v = xr.concat(v, dim='time')
@@ -257,9 +229,8 @@ SH = xr.concat(SH, dim='time')
 
 mass_residual, mass_value = dry_air_mass_residual(q, level_p, area)
 water_residual, water_tendency, evapor, precip = water_budget_residual(q, precip, evapor, N_seconds, area, level_p)
-energy_residual, energy_tendency, atmos_top, surf = energy_budget_residual(u, v, T, q_v, q_liquid, q_ice, 
-                                                          GPH_surf, TOA_net, OLR, R_short, R_long, LH, SH, 
-                                                          N_seconds, area, level_p)
+energy_residual, energy_tendency, atmos_top, surf = energy_budget_residual(
+    u, v, T, q, GPH_surf, TOA_net, OLR, R_short, R_long, LH, SH, N_seconds, area, level_p)
 
 ds_mass = xr.Dataset({
     'mass_residual': mass_residual,
@@ -280,11 +251,12 @@ ds_energy = xr.Dataset({
     'surf': surf
 })
 
-save_name_mass = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_mass_residual_025_full_{:05d}_{:05d}.nc'
-save_name_water = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_water_residual_025_full_{:05d}_{:05d}.nc'
-save_name_energy = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_energy_residual_025_full_{:05d}_{:05d}.nc'
+save_name_mass = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_mass_residual_subset_{:05d}_{:05d}.nc'
+save_name_water = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_water_residual_subset_{:05d}_{:05d}.nc'
+save_name_energy = '/glade/campaign/cisl/aiml/ksha/CREDIT_physics/VERIF/ERA5_clim/ERA5_energy_residual_subset_{:05d}_{:05d}.nc'
 
-ds_mass.to_netcdf(save_name_mass.format(ind_start, ind_end), compute=True, mode='w')
-ds_water.to_netcdf(save_name_water.format(ind_start, ind_end), compute=True, mode='w')
-ds_energy.to_netcdf(save_name_energy.format(ind_start, ind_end), compute=True, mode='w')
+ds_mass.to_netcdf(save_name_mass.format(ind_start, ind_end), compute=True)
+ds_water.to_netcdf(save_name_water.format(ind_start, ind_end), compute=True)
+ds_energy.to_netcdf(save_name_energy.format(ind_start, ind_end), compute=True)
+
 
