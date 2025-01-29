@@ -19,6 +19,8 @@ Artificial Intelligence (AI) weather prediction (AIWP) models are powerful tools
 
 * NSF NCAR MILES Community Research Earth Digital Intelligence Twin (CREDIT) [[link](https://github.com/NCAR/miles-credit)]
 
+* The implementation of conservation schemes in CREDIT [[link](https://github.com/NCAR/miles-credit/blob/main/credit/postblock.py)]
+
 ## Navigation
 
 * Data pre-processing: [ERA5 data access](https://github.com/yingkaisha/CREDIT-physics-run/blob/main/data_preprocessing/DATA00_ERA5_plevel_preprocess.ipynb), [1.0-degree interpolation](https://github.com/yingkaisha/CREDIT-physics-run/blob/main/data_preprocessing/DATA01_ERA5_plevel_1deg_interp.ipynb)
